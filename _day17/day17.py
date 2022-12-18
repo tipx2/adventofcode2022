@@ -51,7 +51,7 @@ for w in range(1_000_000_000_000):
             loop, cached_highest = cache[key]
             divide, modulo = divmod(1_000_000_000_000-w, w-loop)
             if modulo == 0: 
-                print(highest_rock + (highest_rock-cached_highest)*d)
+                print(highest_rock + (highest_rock-cached_highest)*divide)
                 break
         else: 
             cache[key] = w, highest_rock
