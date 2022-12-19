@@ -11,12 +11,11 @@ for coord in lines:
 
 total_surface_area = 0
 for cube in lines:
-    add = 6
+    total_surface_area += 6
     for neighbor_tuple in [(1,0,0),(-1,0,0),(0,1,0),(0,-1,0), (0,0,1),(0,0,-1)]:
         check = tuple(map(lambda x, y: x + y, cube, neighbor_tuple))
         if check in lines:
-            add -= 1
-    total_surface_area += add
+            total_surface_area -= 1
 print("part 1:")     
 print(total_surface_area)
 
