@@ -1,34 +1,31 @@
-from collections import deque
-with open("test20.txt") as f:
+import sys
+
+if len(sys.argv) == 2:
+    file_t = sys.argv[1]
+else:
+    file_t = "input20.txt"
+
+with open(file_t) as f:
     striplines = [h.strip() for h in f.readlines()]
-    lines = [[int(y), striplines.index(y)] for y in striplines]
 
+    
 
-def find_item(n, arr, g):
+def find_item(n, arr, g): # g=0 for find by item, g=1 for find by index
     for y in range(len(arr)):
         if arr[y][g] == n:
-            return y # returns index of item found
-    print("item not found (huh?)")
+            return y
 
-for x in range(len(lines)):
-    current_item_index = find_item(x, lines, 1)
-    
-    new_pos = lines[current_item_index][0] + lines.index(lines[current_item_index])
-    
-    if new_pos <= 0:
-        new_pos = len(lines)-1 + new_pos
-    elif new_pos > len(lines):
-        new_pos = 1 + new_pos
-    
-    new_pos = new_pos % len(lines)
-    
-    lines.insert(new_pos, lines.pop(current_item_index))
-    
-    # print([y[0] for y in lines])
-    # print([y[0] for y in lines] == test_tester[x])
-    # print()
-    
+def do_part(n, g):
+    lines = [[int(y) * g, i] for i, y in enumerate(striplines)]
+    for _ in range(n):
+        for x in range(len(lines)):
+            current_item_index = find_item(x, lines, 1)
+            lines.insert((lines[current_item_index][0] + current_item_index) % (len(lines)-1), lines.pop(current_item_index))
+    zero_index = find_item(0, lines, 0)
+    return sum([lines[(zero_index+1000*i)%len(lines)][0] for i in [1,2,3]])
 
 
-zero_index = find_item(0, lines, 0)
-print(sum([lines[(zero_index+1000*i)%len(lines)][0] for i in [1,2,3]]))
+print("part 1:")
+print(do_part(1, 1))
+print("part 2:")
+print(do_part(10, 811589153))
